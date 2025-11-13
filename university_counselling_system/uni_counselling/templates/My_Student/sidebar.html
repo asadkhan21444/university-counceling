@@ -1,0 +1,94 @@
+<!-- templates/My_Home/sidebar.html -->
+<div class="sidebar-nav">
+    <div class="sidebar-header p-3 text-center border-bottom">
+        <h4 class="mb-0">Counselling System</h4>
+        <small>Student Panel</small>
+    </div>
+    <nav class="nav flex-column">
+        <!-- Dashboard -->
+        <a class="nav-link {% if request.resolver_match.url_name == 'student_dashboard' %}active{% endif %}" href="{% url 'student_dashboard' %}">
+            <i class="fas fa-tachometer-alt me-2"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <!-- Appointments -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="appointmentsDropdown">
+                <i class="fas fa-calendar-alt me-2"></i>
+                <span class="nav-text">Appointments</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'Student_appointment_create' %}">
+                    <i class="fas fa-plus me-2"></i>Book Appointment</a>
+                </li>
+                <li><a class="dropdown-item" href="{% url 'student_appointment_list' %}">
+                    <i class="fas fa-list me-2"></i>My Appointments</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Counselling Sessions -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#counsellingSessionSub" role="button" aria-expanded="false" aria-controls="counsellingSessionSub">
+                <i class="fas fa-comments me-2"></i>
+                <span class="nav-text">Counselling Sessions</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <div class="collapse" id="counsellingSessionSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'student_session_document_list' %}">My Sessions</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Session Documents -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#sessionDocumentSub" role="button" aria-expanded="false" aria-controls="sessionDocumentSub">
+                <i class="fas fa-file-alt me-2"></i>
+                <span class="nav-text">Session Documents</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="sessionDocumentSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'student_session_document_list' %}">My Documents</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Emergency Contact -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'student_emergency_contact_list' %}">
+                <i class="fas fa-phone-alt me-2"></i>
+                <span class="nav-text">Emergency Contacts</span>
+            </a>
+        </li>
+
+        <!-- Counsellor Review -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#counsellorReviewSub" role="button" aria-expanded="false" aria-controls="counsellorReviewSub">
+                <i class="fas fa-star me-2"></i>
+                <span class="nav-text">Counsellor Reviews</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="counsellorReviewSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'student_review_add' %}">Submit Review</a></li>
+                    <li><a class="nav-link" href="{% url 'student_review_list' %}">My Reviews</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Profile -->
+        <a class="nav-link" href="{% url 'student_user_list' %}">
+            <i class="fas fa-user me-2"></i>
+            <span class="nav-text">My Profile</span>
+        </a>
+
+        <!-- Logout -->
+        <a class="nav-link d-flex align-items-center" href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            <span class="nav-text">Logout</span>
+        </a>
+    </nav>
+</div>

@@ -1,0 +1,155 @@
+{% extends 'My_Home/base.html' %}
+
+{% block title %}About Us - University Counselling System{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold">About Our Counselling System</h1>
+                <p class="lead">Committed to empowering students through professional support and guidance</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="University Students" class="img-fluid rounded shadow-lg">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Our Mission & Vision</h2>
+                <div class="mb-5">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded me-4">
+                            <i class="fas fa-{{ mission.icon }} fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold">{{ mission.title }}</h4>
+                            <p class="text-muted">{{ mission.description }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded me-4">
+                            <i class="fas fa-{{ vision.icon }} fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold">{{ vision.title }}</h4>
+                            <p class="text-muted">{{ vision.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="fw-bold mb-3">Our Values</h2>
+                <p class="lead text-muted">The principles that guide our work with students</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for value in values %}
+            <div class="col-md-4">
+                <div class="value-card card p-4 text-center h-100 border-0 shadow-sm">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-{{ value.icon }} fa-3x text-primary"></i>
+                    </div>
+                    <h4>{{ value.title }}</h4>
+                    <p class="text-muted">{{ value.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="fw-bold mb-3">Our Leadership Team</h2>
+                <p class="lead text-muted">Experienced professionals dedicated to student success</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for member in team %}
+            <div class="col-md-4">
+                <div class="team-card card text-center border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <img src="{{ member.image }}" alt="{{ member.name }}" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h4 class="fw-bold">{{ member.name }}</h4>
+                        <p class="text-primary mb-2">{{ member.position }}</p>
+                        <p class="text-muted">{{ member.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            {% for stat in stats %}
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div class="stat-item">
+                    <h2 class="display-4 fw-bold">{{ stat.value }}</h2>
+                    <p class="lead">{{ stat.label }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="fw-bold mb-3">What Students Say</h2>
+                <p class="lead text-muted">Hear from students who have benefited from our counselling services</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for testimonial in testimonials %}
+            <div class="col-md-4">
+                <div class="testimonial-card card p-4 h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="text-warning mb-3">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= testimonial.rating %}
+                                    <i class="fas fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="fst-italic mb-4">{{ testimonial.text }}</p>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ testimonial.image }}" alt="{{ testimonial.name }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                            <div>
+                                <h6 class="fw-bold mb-0">{{ testimonial.name }}</h6>
+                                <small class="text-muted">{{ testimonial.program }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

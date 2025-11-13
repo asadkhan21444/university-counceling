@@ -1,0 +1,29 @@
+{% extends 'My_Admin/base1.html' %}
+{% block title %}Edit User{% endblock %}
+{% block page_title %}Edit User Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input type="text" name="username" class="form-control" value="{{ user.username }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Role</label>
+      <select name="role" class="form-select" required>
+        <option value="student" {% if user.role == "student" %}selected{% endif %}>Student</option>
+        <option value="counsellor" {% if user.role == "counsellor" %}selected{% endif %}>Counsellor</option>
+        <option value="admin" {% if user.role == "admin" %}selected{% endif %}>Administrator</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{% url 'user_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

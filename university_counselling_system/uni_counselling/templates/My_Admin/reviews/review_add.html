@@ -1,0 +1,37 @@
+{% extends 'My_Admin/base1.html' %}
+{% block title %}Add Review{% endblock %}
+{% block page_title %}Add Review{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label>Counsellor</label>
+            <select name="counsellor" class="form-select" required>
+                {% for c in counsellors %}
+                    <option value="{{ c.pk }}">{{ c.user.get_full_name }} ({{ c.specialization }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Student</label>
+            <select name="student" class="form-select" required>
+                {% for s in students %}
+                    <option value="{{ s.pk }}">{{ s.user.get_full_name }} - {{ s.student_id }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Rating</label>
+            <input type="number" name="rating" class="form-control" min="1" max="5" required>
+        </div>
+        <div class="mb-3">
+            <label>Review Text</label>
+            <textarea name="review_text" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Review</button>
+        <a href="{% url 'review_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'My_Consuller/base1.html' %}
+
+{% block title %}Sessions List{% endblock %}
+{% block page_title %}Counselling Sessions{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h3>All Sessions</h3>
+        <a href="{% url 'my_session_create' %}" class="btn btn-primary">Add Session</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Appointment</th>
+                <th>Session Date</th>
+                <th>Notes</th>
+                <th>Rating</th>
+                <th>Follow Up</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+            <tr>
+                <td>{{ session.id }}</td>
+                <td>{{ session.appointment }}</td>
+                <td>{{ session.session_date|date:"Y-m-d H:i" }}</td>
+                <td>{{ session.session_notes|truncatechars:50 }}</td>
+                <td>{{ session.rating|default:"-" }}</td>
+                <td>
+                    {% if session.follow_up_required %}
+                        {{ session.follow_up_date }}
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'my_session_update' session.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'my_session_delete' session.id %}" 
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirmDelete(event)">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center">No sessions found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- SweetAlert Delete -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDelete(e) {
+    e.preventDefault();
+    let url = e.currentTarget.getAttribute('href');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This session will be deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+    return false;
+}
+
+// Show Django messages in SweetAlert
+{% if messages %}
+    {% for message in messages %}
+        Swal.fire({
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            title: "{{ message }}",
+            timer: 3000,
+            showConfirmButton: false
+        });
+    {% endfor %}
+{% endif %}
+</script>
+{% endblock %}

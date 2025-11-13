@@ -1,0 +1,86 @@
+{% extends 'My_Admin/base1.html' %}
+
+{% block title %}Appointments{% endblock %}
+{% block page_title %}Appointments List{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Appointments</h2>
+        <a href="{% url 'appointment_create' %}" class="btn btn-primary">+ Add Appointment</a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                Swal.fire({
+                    icon: "{{ message.tags }}",
+                    title: "{{ message }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        {% endfor %}
+    {% endif %}
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Counsellor</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Purpose</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.student.user.username }}</td>
+                <td>{{ appointment.counsellor.user.username }}</td>
+                <td>{{ appointment.appointment_date|date:"M d, Y H:i" }}</td>
+                <td><span class="badge bg-info">{{ appointment.get_status_display }}</span></td>
+                <td>{{ appointment.purpose|truncatechars:30 }}</td>
+                <td>
+                    <a href="{% url 'appointment_update' appointment.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <button class="btn btn-sm btn-danger" onclick="deleteAppointment({{ appointment.id }})">Delete</button>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="7" class="text-center">No appointments found</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function deleteAppointment(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This appointment will be deleted permanently!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/appointments/${id}/delete/`, {
+                method: 'POST',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Deleted!', 'Appointment has been deleted.', 'success')
+                        .then(() => location.reload());
+                }
+            });
+        }
+    })
+}
+</script>
+{% endblock %}

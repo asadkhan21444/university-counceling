@@ -1,0 +1,103 @@
+<!-- templates/My_Consuller/sidebar.html -->
+<div class="sidebar-nav">
+    <div class="sidebar-header p-3 text-center border-bottom">
+        <h4 class="mb-0">Counselling System</h4>
+        <small>Counsellor Panel</small>
+    </div>
+    <nav class="nav flex-column">
+        <!-- Dashboard -->
+        <a class="nav-link {% if request.resolver_match.url_name == 'counsellor_dashboard' %}active{% endif %}" href="{% url 'counsellor_dashboard' %}">
+            <i class="fas fa-tachometer-alt me-2"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <!-- My Appointments -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="appointmentsDropdown">
+                <i class="fas fa-calendar-check me-2"></i>
+                <span class="nav-text">My Appointments</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'counseller_appointment_list' %}">
+                    <i class="fas fa-list me-2"></i>View All Appointments</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- My Availability -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#availabilitySub" role="button" aria-expanded="false" aria-controls="availabilitySub">
+                <i class="fas fa-clock me-2"></i>
+                <span class="nav-text">My Availability</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <div class="collapse" id="availabilitySub">
+                <ul class="nav flex-column ms-5">
+                    {% if perms.My_Appointment.can_manage_own_availability %}
+                    <li>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'manage_availability' %}active{% endif %}"
+                        href="{% url 'manage_availability' %}">
+                            <i class="fas fa-calendar-alt me-2"></i> Manage Schedule
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'view_availability' %}active{% endif %}"
+                        href="{% url 'view_availability' %}">
+                            <i class="fas fa-eye me-2"></i> View Availability
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <!-- Session Documents -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#sessionDocumentSub" role="button" aria-expanded="false" aria-controls="sessionDocumentSub">
+                <i class="fas fa-file-alt me-2"></i>
+                <span class="nav-text">Session Documents</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="sessionDocumentSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'counseller_session_document_add' %}">Upload Documents</a></li>
+                    <li><a class="nav-link" href="{% url 'counseller_session_document_list' %}">View Documents</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Student Records -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'counseller_student_list' %}">
+                <i class="fas fa-user-graduate me-2"></i>
+                <span class="nav-text">Student Records</span>
+            </a>
+        </li>
+
+        <!-- Reviews -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#reviewsSub" role="button" aria-expanded="false" aria-controls="reviewsSub">
+                <i class="fas fa-star me-2"></i>
+                <span class="nav-text">Reviews</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="reviewsSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'counseller_review_list' %}">View Feedback</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Profile -->
+        <a class="nav-link" href="{% url 'counseller_user_list' %}">
+            <i class="fas fa-user me-2"></i>
+            <span class="nav-text">My Profile</span>
+        </a>
+
+        <!-- Logout -->
+        <a class="nav-link d-flex align-items-center" href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            <span class="nav-text">Logout</span>
+        </a>
+    </nav>
+</div>

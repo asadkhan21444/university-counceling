@@ -1,0 +1,5 @@
+python manage.py shell
+============================================
+from My_App.admin import setup_default_groups
+setup_default_groups()
+exit()

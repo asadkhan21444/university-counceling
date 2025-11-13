@@ -1,0 +1,240 @@
+<!-- templates/My_Consuller/counsellor_dashboard.html -->
+{% extends 'My_Consuller/base1.html' %}
+
+{% block title %}Counsellor Dashboard - University Counselling System{% endblock %}
+
+{% block page_title %}Counsellor Dashboard{% endblock %}
+
+{% block content %}
+<!-- Dashboard Content -->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+            <p class="text-muted">Here's your counselling management dashboard.</p>
+            
+            {% if counsellor %}
+            <div class="alert alert-info">
+                <strong>Specialization:</strong> {{ counsellor.specialization|default:"Not Set" }} | 
+                <strong>Years of Experience:</strong> {{ counsellor.years_of_experience|default:"0" }} | 
+                <strong>Status:</strong> <span class="badge bg-success">Active</span>
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Your counsellor profile is being set up. Some features may be limited.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mt-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ today_appointments|default:0 }}</h3>
+                        <p class="mb-0">Today's Appointments</p>
+                    </div>
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ pending_appointments|default:0 }}</h3>
+                        <p class="mb-0">Pending Appointments</p>
+                    </div>
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ recent_reviews|default:0 }}</h3>
+                        <p class="mb-0">Recent Reviews</p>
+                    </div>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ active_students|default:0 }}</h3>
+                        <p class="mb-0">Active Students</p>
+                    </div>
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions & Recent Activity -->
+    <div class="row mt-4">
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'manage_availability' %}" class="btn btn-outline-primary btn-sm mb-2">
+                            <i class="fas fa-clock me-2"></i>Manage Availability
+                        </a>
+                        <a href="{% url 'view_availability' %}" class="btn btn-outline-primary btn-sm mb-2">
+                            <i class="fas fa-list me-2"></i>View Appointments
+                        </a>
+                        <a href="{% url 'counseller_student_list' %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-user-graduate me-2"></i>Student Records
+                        </a>
+                    </div>
+                    
+                    <!-- Additional Stats -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h6 class="mb-3">My Statistics</h6>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="stat-mini">
+                                    <h4 class="text-primary mb-1">{{ total_appointments|default:0 }}</h4>
+                                    <small class="text-muted">Total Appointments</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="stat-mini">
+                                    <h4 class="text-success mb-1">{{ completed_sessions|default:0 }}</h4>
+                                    <small class="text-muted">Completed Sessions</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-mini">
+                                    <h4 class="text-warning mb-1">{{ average_rating|default:"0.0" }}</h4>
+                                    <small class="text-muted">Avg. Rating</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-mini">
+                                    <h4 class="text-info mb-1">{{ documents_count|default:0 }}</h4>
+                                    <small class="text-muted">Documents</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Today's Schedule</h5>
+                    <span class="badge bg-primary">{{ today_appointments|default:0 }} Appointments</span>
+                </div>
+                <div class="card-body">
+                    {% if today_appointments_list %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Student</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in today_appointments_list %}
+                                <tr>
+                                    <td>{{ appointment.appointment_date|time:"H:i" }}</td>
+                                    <td>
+                                        {% if appointment.student.user.get_full_name %}
+                                            {{ appointment.student.user.get_full_name }}
+                                        {% else %}
+                                            {{ appointment.student.user.username }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ appointment.get_session_type_display|default:"General" }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if appointment.status == 'confirmed' %}bg-success
+                                            {% elif appointment.status == 'pending' %}bg-warning
+                                            {% elif appointment.status == 'completed' %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ appointment.get_status_display|default:appointment.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No Appointments Today</h5>
+                        <p class="text-muted">You don't have any appointments scheduled for today.</p>
+                        <a href="{% url 'manage_availability' %}" class="btn btn-primary">
+                            <i class="fas fa-clock me-2"></i>Manage Availability
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s ease;
+        border-left: 4px solid #007bff;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stat-card h3 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .stat-card p {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    .stat-card i {
+        font-size: 2rem;
+        color: #007bff;
+        opacity: 0.7;
+    }
+    
+    .stat-mini h4 {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+    
+    .stat-mini small {
+        font-size: 0.75rem;
+    }
+</style>
+{% endblock %}

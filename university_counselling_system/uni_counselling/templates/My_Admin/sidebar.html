@@ -1,0 +1,175 @@
+<!-- templates/My_Home/sidebar.html -->
+<div class="sidebar-nav">
+    <div class="sidebar-header p-3 text-center border-bottom">
+        <h4 class="mb-0">Counselling System</h4>
+        <small>Admin Panel</small>
+    </div>
+    <nav class="nav flex-column">
+        <!-- Dashboard -->
+        <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'admin_dashboard' %}">
+            <i class="fas fa-tachometer-alt me-2"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <!-- User Management -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="userManagementDropdown">
+                <i class="fas fa-users me-2"></i>
+                <span class="nav-text">User Management</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'student_add' %}"><i class="fas fa-user-graduate me-2"></i>Add Students</a></li>
+                <li><a class="dropdown-item" href="{% url 'student_list' %}"><i class="fas fa-user-graduate me-2"></i>Manage Students</a></li>
+                <li><a class="dropdown-item" href="{% url 'counsellor_list' %}"><i class="fas fa-user-tie me-2"></i>Manage Counsellors</a></li>
+            </ul>
+        </div>
+
+        <!-- Appointments -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="appointmentsDropdown">
+                <i class="fas fa-calendar-alt me-2"></i>
+                <span class="nav-text">Appointments</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'appointment_create' %}">
+                    <i class="fas fa-list me-2"></i>Add Appointments</a>
+                </li>
+                <li><a class="dropdown-item" href="{% url 'appointment_list' %}">
+                    <i class="fas fa-tasks me-2">
+                            </i>Manage Appointments</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Counsellors -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="counsellorsDropdown">
+                <i class="fas fa-user-md me-2"></i>
+                <span class="nav-text">Manage Counsellors</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'counsellor_add' %}"><i class="fas fa-id-card me-2"></i>Add Counsellor Profiles</a></li>
+                <li><a class="dropdown-item" href="{% url 'counsellor_list' %}"><i class="fas fa-clock me-2"></i>View All Counsellor</a></li>
+            </ul>
+        </div>
+
+        <!-- Counsellor Availability (Main Sidebar + Sub-sidebar) -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#counsellorMenu" role="button" aria-expanded="false" aria-controls="counsellorMenu">
+                <i class="fas fa-user-clock me-2"></i>
+                <span class="nav-text">Counsellor Availability</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <div class="collapse" id="counsellorMenu">
+                <ul class="nav flex-column ms-5">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'availability_add' %}">
+                            <i class="fas fa-calendar-plus me-2"></i> Add Availability
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'availability_list' %}">
+                            <i class="fas fa-calendar-check me-2"></i> View Availability
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Counselling Session -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#counsellingSessionSub" role="button" aria-expanded="false" aria-controls="counsellingSessionSub">
+                <i class="fas fa-comments me-2"></i>
+                <span class="nav-text">Counselling Session</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <div class="collapse" id="counsellingSessionSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'session_add' %}">Create Session</a></li>
+                    <li><a class="nav-link" href="{% url 'admin_session_list' %}">View All Sessions</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Session Document -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#sessionDocumentSub" role="button" aria-expanded="false" aria-controls="sessionDocumentSub">
+                <i class="fas fa-file-alt me-2"></i>
+                <span class="nav-text">Session Document</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="sessionDocumentSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'session_document_add' %}">Create Upload Document</a></li>
+                    <li><a class="nav-link" href="{% url 'session_document_list' %}">View All Documents</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Emergency Contact -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#emergencyContactSub" role="button" aria-expanded="false" aria-controls="emergencyContactSub">
+                <i class="fas fa-phone-alt me-2"></i>
+                <span class="nav-text">Emergency Contact</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="emergencyContactSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'emergency_contact_add' %}">Add Contact</a></li>
+                    <li><a class="nav-link" href="{% url 'emergency_contact_list' %}">View All Contacts</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Counsellor Review -->
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#counsellorReviewSub" role="button" aria-expanded="false" aria-controls="counsellorReviewSub">
+                <i class="fas fa-star me-2"></i>
+                <span class="nav-text">Counsellor Review</span>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="counsellorReviewSub">
+                <ul class="nav flex-column ms-5">
+                    <li><a class="nav-link" href="{% url 'review_add' %}">Submit Review</a></li>
+                    <li><a class="nav-link" href="{% url 'review_list' %}">View All Reviews</a></li>
+                </ul>
+            </div>
+        </li>
+
+
+        <!-- Reports -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="reportsDropdown">
+                <i class="fas fa-chart-bar me-2"></i>
+                <span class="nav-text">Reports</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'counselling_report' %}"><i class="fas fa-comments me-2"></i>Counselling Sessions Reports</a></li>
+                <li><a class="dropdown-item" href="{% url 'student_report' %}"><i class="fas fa-chart-line me-2"></i>Student Statistics</a></li>
+                <li><a class="dropdown-item" href="{% url 'appointment_report' %}"><i class="fas fa-calendar-check me-2"></i>Appointment Reports</a></li>
+            </ul>
+        </div>
+        <!-- Settings -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="settingsDropdown">
+                <i class="fas fa-cog me-2"></i>
+                <span class="nav-text">Settings</span>
+                <i class="fas fa-chevron-down ms-auto dropdown-arrow"></i>
+            </a>
+            <ul class="dropdown-menu sidebar-dropdown">
+                <li><a class="dropdown-item" href="{% url 'role_list' %}"><i class="fas fa-user-tag me-2"></i>Roles & Permissions</a></li>
+                <li><a class="dropdown-item" href="{% url 'user_list' %}"><i class="fas fa-sliders-h me-2"></i>System Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Logout -->
+        <a class="nav-link d-flex align-items-center" href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            <span class="nav-text">Logout</span>
+        </a>
+    </nav>
+</div>

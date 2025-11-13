@@ -1,0 +1,31 @@
+{% extends 'My_Consuller/base1.html' %}
+
+{% block title %}View Availability{% endblock %}
+{% block page_title %}All Counsellors Availability{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Counsellor</th>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in availabilities %}
+            <tr>
+                <td>{{ a.counsellor.user.get_full_name }}</td>
+                <td>{{ a.get_day_of_week_display }}</td>
+                <td>{{ a.start_time }}</td>
+                <td>{{ a.end_time }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center">No active availability found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

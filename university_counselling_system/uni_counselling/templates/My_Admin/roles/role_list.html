@@ -1,0 +1,30 @@
+{% extends 'My_Admin/base1.html' %}
+{% block title %}Roles - Admin{% endblock %}
+{% block page_title %}Role Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <a href="{% url 'role_add' %}" class="btn btn-primary mb-3">Add Role</a>
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for role in roles %}
+      <tr>
+        <td>{{ role.id }}</td>
+        <td>{{ role.name }}</td>
+        <td>
+          <a href="{% url 'role_edit' role.id %}" class="btn btn-warning btn-sm">Edit</a>
+          <a href="{% url 'role_delete' role.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

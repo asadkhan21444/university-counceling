@@ -1,0 +1,110 @@
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom py-3">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <i class="fas fa-graduation-cap fa-2x me-2 text-gradient"></i>
+            <span class="fw-bold fs-3 text-dark">UniCounselling</span>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler border-0 fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+                <!-- Home -->
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-4 py-2 rounded-pill hover-link d-flex align-items-center fs-5" href="{% url 'home' %}">
+                        <i class="fas fa-home me-2 text-primary fs-5"></i>
+                        Home
+                    </a>
+                </li>
+
+                <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-4 py-2 rounded-pill hover-link d-flex align-items-center fs-5" href="{% url 'about' %}">
+                        <i class="fas fa-info-circle me-2 text-primary fs-5"></i>
+                        About
+                    </a>
+                </li>
+
+                <!-- Services -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link fw-semibold px-4 py-2 rounded-pill hover-link dropdown-toggle d-flex align-items-center fs-5" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-concierge-bell me-2 text-primary fs-5"></i>
+                        Services
+                    </a>
+                    <ul class="dropdown-menu shadow border-0 rounded-4 p-3 animate-dropdown fs-6">
+                        <li>
+                            <a class="dropdown-item rounded-3 py-3 d-flex align-items-center" href="{% url 'services' %}">
+                                <i class="fas fa-user-graduate me-3 text-primary fs-5"></i>
+                                <span>System Services</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- System Users -->
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-4 py-2 rounded-pill hover-link d-flex align-items-center fs-5" href="{% url 'system_user_home' %}">
+                        <i class="fas fa-users me-2 text-primary fs-5"></i>
+                        System Users
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+/* Gradient logo icon */
+.text-gradient {
+    background: linear-gradient(45deg, #2c5aa0, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Hover link with highlight */
+.hover-link {
+    transition: all 0.3s ease;
+}
+.hover-link:hover {
+    background-color: #f0f5ff;
+    color: #2c5aa0 !important;
+    box-shadow: 0 3px 10px rgba(44, 90, 160, 0.15);
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+    min-width: 260px;
+    border-radius: 14px;
+    border: 1px solid #f0f0f0;
+}
+.dropdown-item {
+    font-weight: 500;
+    transition: all 0.25s ease;
+    font-size: 1.05rem;
+}
+.dropdown-item:hover {
+    background-color: #f0f5ff;
+    color: #2c5aa0 !important;
+}
+
+/* Dropdown animation */
+.animate-dropdown {
+    animation: dropdownFade 0.25s ease forwards;
+    transform-origin: top center;
+}
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>

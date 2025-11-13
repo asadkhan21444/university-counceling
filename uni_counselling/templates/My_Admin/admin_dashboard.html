@@ -1,0 +1,736 @@
+<!-- templates/My_Admin/admin_dashboard.html -->
+{% extends 'My_Admin/base1.html' %}
+
+{% block title %}Admin Dashboard - University Counselling System{% endblock %}
+
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Dashboard Content -->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+            <p class="text-muted">Here's what's happening with your platform today.</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mt-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ total_users }}</h3>
+                        <p class="mb-0">Total Users</p>
+                    </div>
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ total_students }}</h3>
+                        <p class="mb-0">Students</p>
+                    </div>
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ total_counsellors }}</h3>
+                        <p class="mb-0">Counsellors</p>
+                    </div>
+                    <i class="fas fa-user-tie"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3>{{ total_admins }}</h3>
+                        <p class="mb-0">Administrators</p>
+                    </div>
+                    <i class="fas fa-user-shield"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Analytics & Quick Actions -->
+    <div class="row mt-4">
+        <!-- User Analytics Graphs -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">User Analytics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- User Distribution Chart -->
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <h6 class="text-center mb-3">User Distribution</h6>
+                                <canvas id="userDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- User Growth Chart -->
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <h6 class="text-center mb-3">User Growth (Last 7 Days)</h6>
+                                <canvas id="userGrowthChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Active Users Chart -->
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <h6 class="text-center mb-3">Active Users Status</h6>
+                                <canvas id="activeUsersChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- User Registration Trend -->
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <h6 class="text-center mb-3">Registration Trend</h6>
+                                <canvas id="registrationTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Debug Information (Remove in production) -->
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6>Debug Information:</h6>
+                        <p class="mb-1">Students: {{ total_students }}, Counsellors: {{ total_counsellors }}, Admins: {{ total_admins }}</p>
+                        <p class="mb-1">Total Users: {{ total_users }}, Active Today: {{ active_users }}</p>
+                        <p class="mb-0">New Users Today: {{ new_users_today }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm mb-2">
+                            <i class="fas fa-plus me-2"></i>Add New User
+                        </a>
+                        <button class="btn btn-outline-primary btn-sm mb-2">
+                            <i class="fas fa-calendar-plus me-2"></i>Create Appointment
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm mb-2">
+                            <i class="fas fa-chart-bar me-2"></i>Generate Report
+                        </button>
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-cog me-2"></i>System Settings
+                        </a>
+                    </div>
+                    
+                    <!-- Additional Stats -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h6 class="mb-3">Today's Overview</h6>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="stat-mini">
+                                    <h4 class="text-primary mb-1">{{ new_users_today }}</h4>
+                                    <small class="text-muted">New Users</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="stat-mini">
+                                    <h4 class="text-success mb-1">{{ active_users }}</h4>
+                                    <small class="text-muted">Active Today</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-mini">
+                                    <h4 class="text-warning mb-1">{{ pending_approvals }}</h4>
+                                    <small class="text-muted">Pending</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-mini">
+                                    <h4 class="text-info mb-1">{{ total_sessions }}</h4>
+                                    <small class="text-muted">Sessions</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Management Tables -->
+    <div class="row mt-4">
+        <!-- All Users Table -->
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">All Users</h5>
+                    <span class="badge bg-primary">{{ total_users }} Users</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Date Joined</th>
+                                    <th>Last Login</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in all_users %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-primary rounded-circle text-white d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px;">
+                                                {{ user.username|first|upper }}
+                                            </div>
+                                            {{ user.username }}
+                                        </div>
+                                    </td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if user.role == 'admin' %}bg-danger
+                                            {% elif user.role == 'counsellor' %}bg-warning
+                                            {% else %}bg-success{% endif %}">
+                                            {{ user.role|title }}
+                                        </span>
+                                    </td>
+                                    <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                                    <td>
+                                        {% if user.last_login %}
+                                            {{ user.last_login|date:"M d, Y" }}
+                                        {% else %}
+                                            <span class="text-muted">Never</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge {% if user.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            {% if user.id != request.user.id %}
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted">No users found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role-wise User Tables -->
+    <div class="row mt-4">
+        <!-- Students Table -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Students</h5>
+                    <span class="badge bg-success">{{ total_students }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>{{ student.username }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>{{ student.date_joined|date:"M d" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No students</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counsellors Table -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Counsellors</h5>
+                    <span class="badge bg-warning">{{ total_counsellors }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for counsellor in counsellors %}
+                                <tr>
+                                    <td>{{ counsellor.username }}</td>
+                                    <td>{{ counsellor.email }}</td>
+                                    <td>
+                                        <span class="badge {% if counsellor.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {% if counsellor.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No counsellors</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admins Table -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Administrators</h5>
+                    <span class="badge bg-danger">{{ total_admins }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for admin in admins %}
+                                <tr>
+                                    <td>{{ admin.username }}</td>
+                                    <td>{{ admin.email }}</td>
+                                    <td>
+                                        <span class="badge {% if admin.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {% if admin.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No administrators</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded - initializing charts');
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        // Check if canvas elements exist and create charts
+        initializeCharts();
+    });
+
+    function initializeCharts() {
+        try {
+            // User Distribution Doughnut Chart
+            const distributionCanvas = document.getElementById('userDistributionChart');
+            if (distributionCanvas) {
+                const distributionCtx = distributionCanvas.getContext('2d');
+                new Chart(distributionCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Students', 'Counsellors', 'Administrators'],
+                        datasets: [{
+                            data: [
+                                {{ total_students|default:0 }}, 
+                                {{ total_counsellors|default:0 }}, 
+                                {{ total_admins|default:0 }}
+                            ],
+                            backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+                            borderColor: ['#fff', '#fff', '#fff'],
+                            borderWidth: 2,
+                            hoverOffset: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = {{ total_users|default:1 }};
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('Distribution chart created successfully');
+            }
+
+            // User Growth Line Chart
+            const growthCanvas = document.getElementById('userGrowthChart');
+            if (growthCanvas) {
+                const growthCtx = growthCanvas.getContext('2d');
+                new Chart(growthCtx, {
+                    type: 'line',
+                    data: {
+                        labels: {{ growth_labels|safe }},
+                        datasets: [{
+                            label: 'New Users',
+                            data: {{ growth_data|safe }},
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('Growth chart created successfully');
+            }
+
+            // Active Users Pie Chart
+            const activeCanvas = document.getElementById('activeUsersChart');
+            if (activeCanvas) {
+                const activeCtx = activeCanvas.getContext('2d');
+                new Chart(activeCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Active Users', 'Inactive Users'],
+                        datasets: [{
+                            data: [
+                                {{ active_users_count|default:0 }}, 
+                                {{ inactive_users_count|default:0 }}
+                            ],
+                            backgroundColor: ['#28a745', '#6c757d'],
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            }
+                        }
+                    }
+                });
+                console.log('Active users chart created successfully');
+            }
+
+            // Registration Trend Bar Chart
+            const trendCanvas = document.getElementById('registrationTrendChart');
+            if (trendCanvas) {
+                const trendCtx = trendCanvas.getContext('2d');
+                new Chart(trendCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Students', 'Counsellors', 'Admins'],
+                        datasets: [{
+                            label: 'User Registrations',
+                            data: [
+                                {{ total_students|default:0 }}, 
+                                {{ total_counsellors|default:0 }}, 
+                                {{ total_admins|default:0 }}
+                            ],
+                            backgroundColor: [
+                                'rgba(40, 167, 69, 0.8)',
+                                'rgba(255, 193, 7, 0.8)',
+                                'rgba(220, 53, 69, 0.8)'
+                            ],
+                            borderColor: [
+                                '#28a745',
+                                '#ffc107',
+                                '#dc3545'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log('Registration trend chart created successfully');
+            }
+
+        } catch (error) {
+            console.error('Error creating charts:', error);
+        }
+    }
+
+    // Fallback initialization if DOMContentLoaded doesn't fire
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeCharts);
+    } else {
+        initializeCharts();
+    }
+</script>
+
+<style>
+    /* Custom CSS for dashboard */
+    .stat-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s ease;
+        border-left: 4px solid #007bff;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stat-card h3 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .stat-card p {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    .stat-card i {
+        font-size: 2rem;
+        color: #007bff;
+        opacity: 0.7;
+    }
+    
+    /* Mini stats in quick actions */
+    .stat-mini h4 {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+    
+    .stat-mini small {
+        font-size: 0.75rem;
+    }
+    
+    /* Chart containers */
+    .chart-container {
+        position: relative;
+        height: 250px;
+        width: 100%;
+        padding: 10px;
+    }
+    
+    /* Ensure canvas takes full container space */
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    /* Table styling */
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        background-color: #f8f9fa;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    /* Card styling */
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #eaeaea;
+        padding: 15px 20px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    /* Avatar styling */
+    .avatar-sm {
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    
+    /* Badge styling */
+    .badge {
+        font-size: 0.75rem;
+    }
+    
+    /* Button group styling */
+    .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* Debug information styling */
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .stat-card {
+            margin-bottom: 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.5rem;
+        }
+        
+        .stat-card i {
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            font-size: 0.9rem;
+        }
+        
+        .table-responsive {
+            font-size: 0.875rem;
+        }
+        
+        .chart-container {
+            height: 200px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .stat-card {
+            padding: 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.3rem;
+        }
+        
+        .card-body {
+            padding: 15px;
+        }
+        
+        .btn-group .btn {
+            padding: 0.2rem 0.4rem;
+        }
+        
+        .stat-mini h4 {
+            font-size: 1.1rem;
+        }
+        
+        .chart-container {
+            height: 180px;
+        }
+    }
+</style>
+{% endblock %}
